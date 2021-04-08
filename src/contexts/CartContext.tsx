@@ -2,7 +2,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { api } from "../services/api";
 import { Product } from '../types'
 
-interface UpdateProductQuantity {
+export interface UpdateProductQuantity {
   productId: number;
   quantity: number;
 }
@@ -96,7 +96,7 @@ export function CartProvider({
     const cartUpdated = cart.map((product) => {
 
       if (product.id === productId) {
-        return { ...product, quantity: product.quantity + quantity }
+        return { ...product, quantity: quantity }
       }
 
       return product

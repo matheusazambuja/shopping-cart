@@ -1,20 +1,22 @@
 import { Button } from "@chakra-ui/button";
 import { Image } from "@chakra-ui/image";
 import { Input } from "@chakra-ui/input";
-import { Box, Flex, Grid, Heading, ListItem, Text, UnorderedList } from "@chakra-ui/layout";
+import { Flex, Grid, ListItem, Text, UnorderedList } from "@chakra-ui/layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Head from "next/head";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
-import { CartContext } from "../contexts/CartContext";
+import { CartContext, UpdateProductQuantity } from "../contexts/CartContext";
 import { formatPrice } from "../utils/format";
 
 
 export default function Cart() {
 
   const {
-    cart
+    cart,
+    removeProduct,
+    updateProductQuantity
   } = useContext(CartContext)
 
   const cartFormatted = cart.map(product => ({
@@ -28,6 +30,15 @@ export default function Cart() {
 
     return sumTotal
   }, 0))
+
+  function handleIncrementQuantity({ productId, quantity }: UpdateProductQuantity) {
+    updateProductQuantity({ productId, quantity: quantity + 1 })
+  }
+  
+  function handleDecrementQuantity({ productId, quantity }: UpdateProductQuantity) {
+    updateProductQuantity({ productId, quantity: quantity - 1 })
+  }
+
 
   return (
     <>
@@ -122,8 +133,10 @@ export default function Cart() {
                   alignItems='center'
                 >
                   <Image src={cartItem.imageURL} alt={cartItem.name}
-                    margin='2px'
                     width='12rem'
+
+                    margin='2px'
+                    padding='9px'
                   />
                   <Flex as='div'
                     direction='column'
@@ -148,7 +161,12 @@ export default function Cart() {
                   alignItems='center'
                   justifyContent='center'
                 >
-                  <Button type='button'
+                  <Button type='button' onClick={() => handleDecrementQuantity({
+                      productId: cartItem.id,
+                      quantity: cartItem.quantity
+                    })}
+                    disabled={cartItem.quantity <= 1}
+
                     background='transparent'
                     color='blue.600'
 
@@ -159,13 +177,16 @@ export default function Cart() {
                   >
                     <FontAwesomeIcon icon='minus-circle' />
                   </Button>
-                  <Input type='text' readOnly value={cartItem.quantity} 
+                  <Input type='text' readOnly value={cartItem.quantity}
                     width='58px'
                     margin='0 10px'
 
                     textAlign='center'
                   />
-                  <Button type='button'
+                  <Button type='button' onClick={() => handleIncrementQuantity({
+                      productId: cartItem.id,
+                      quantity: cartItem.quantity
+                    })}
                     background='transparent'
                     color='blue.600'
 
@@ -188,7 +209,7 @@ export default function Cart() {
                   >
                     {cartItem.subTotal}
                   </Text>
-                  <Button type='button'
+                  <Button type='button' onClick={() => removeProduct(cartItem.id)}
                     marginLeft='2rem'
 
                     background='transparent'
