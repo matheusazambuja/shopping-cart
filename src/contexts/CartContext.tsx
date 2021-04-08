@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { api } from "../services/api";
-import { Product } from '../types'
+import { ProductInCart } from '../types'
+import { products } from '../products.json'
 
 export interface UpdateProductQuantity {
   productId: number;
@@ -8,7 +8,7 @@ export interface UpdateProductQuantity {
 }
 
 interface CartContextData {
-  cart: Product[],
+  cart: ProductInCart[],
   addProduct: (productId: number) => void
   removeProduct: (productId: number) => void
   updateProductQuantity: ({ productId, quantity }: UpdateProductQuantity) => void
@@ -27,7 +27,7 @@ export function CartProvider({
   children
 }: CartProviderProps) {
 
-  const [cart, setCart] = useState<Product[]>([])
+  const [cart, setCart] = useState<ProductInCart[]>([])
 
   useEffect(() => {
     const storagedCart = localStorage.getItem('@ShoppingCart:cart')
@@ -41,9 +41,9 @@ export function CartProvider({
     const indexProduct = cart.findIndex((product) => product.id === productId)
 
     if (indexProduct === -1) {
-      const { data: productSelected } = await api.get(`products/${productId}`)
+      const productStockSelected = products.filter(product => product.id === productId)[0]
 
-      const cartUpdated = [ ...cart, { ...productSelected, quantity: 1, inCart: true } ]
+      const cartUpdated = [ ...cart, { ...productStockSelected, quantity: 1, inCart: true } ]
 
       setCart(cartUpdated)
       localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
@@ -81,14 +81,14 @@ export function CartProvider({
     productId, quantity
   }: UpdateProductQuantity) {
     
-    const { data: productStock } = await api.get(`products/${productId}`)
+    const productStockSelected = products.filter(product => product.id === productId)[0]
 
     if (quantity <= 0) {
       // Gerar error: Não é possível adicionar um quantidade menor que 1
       return
     }
 
-    if (productStock.quantity < quantity) {
+    if (productStockSelected.quantity < quantity) {
       // Gerar erro: Quantidade fora de estoque
       return
     }

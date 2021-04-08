@@ -1,8 +1,11 @@
-export interface Product {
+export interface ProductInStock {
   id: number
   name: string
-  inCart: boolean
   price: number
   imageURL: string
   quantity: number
+}
+
+export interface ProductInCart extends ProductInStock {
+  inCart: boolean
 }

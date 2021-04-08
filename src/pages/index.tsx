@@ -5,11 +5,11 @@ import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
 import { ProductList } from '../components/ProductList'
 
-import { api } from '../services/api'
-import { Product } from '../types'
+import { products } from '../products.json'
+import { ProductInStock } from '../types'
 
 interface HomeProps {
-  productsStock: Product[]
+  productsStock: ProductInStock[]
 }
 
 export default function Home(props: HomeProps) {
@@ -26,7 +26,7 @@ export default function Home(props: HomeProps) {
         fontFamily='Roboto'
       >
         <Header />
-        <ProductList productsStock={props.productsStock}/>
+        <ProductList productsStock={products}/>
         <Footer />
       </Flex>
     </>
@@ -34,12 +34,12 @@ export default function Home(props: HomeProps) {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { data: productsStock } = await api.get(`products`)
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const { data: productsStock } = JSON.parse('')
 
-  return {
-    props: {
-      productsStock
-    }
-  }
-}
+//   return {
+//     props: {
+//       productsStock
+//     }
+//   }
+// }

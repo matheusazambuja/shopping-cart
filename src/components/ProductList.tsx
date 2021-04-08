@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext } from 'react';
 import { CartContext } from '../contexts/CartContext';
 
-import { Product } from "../types";
+import { ProductInStock } from "../types";
 import { formatPrice } from '../utils/format';
 
 interface ProductListProps {
-  productsStock: Product[]
+  productsStock: ProductInStock[]
 }
 
 export function ProductList({ productsStock }: ProductListProps) {
