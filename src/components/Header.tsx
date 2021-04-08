@@ -1,4 +1,5 @@
 import { Box, Flex, Link } from "@chakra-ui/layout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 export function Header() {
@@ -8,13 +9,21 @@ export function Header() {
       alignItems='center'
       justifyContent='space-between'
 
-      margin='15px 15px 10px 15px'
+      width='100%'
+
+      background='blue.600'
+      color='white'
+      padding='17px 25px 14px 25px'
     >
-      <Link href='/'>
-        Home
+      <Link href='/'
+        fontSize='1.4rem'
+      >
+        <FontAwesomeIcon icon='home'/>
       </Link>
-      <Link href='/cart'>
-        Carrinho
+      <Link href='/cart'
+        fontSize='1.4rem'
+      >
+        <FontAwesomeIcon icon='cart-plus' />
       </Link>
     </Flex>
   )

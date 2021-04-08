@@ -12,6 +12,7 @@ interface CartContextData {
   addProduct: (productId: number) => void
   removeProduct: (productId: number) => void
   updateProductQuantity: ({ productId, quantity }: UpdateProductQuantity) => void
+  productInCart: (productId: number) => boolean
 }
 
 interface CartProviderProps {
@@ -105,13 +106,22 @@ export function CartProvider({
     localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
   }
 
+  function productInCart(productId: number) {
+    const indexProduct = cart.findIndex(product => product.id === productId)
+
+    if (indexProduct === -1) return false
+
+    return true
+  }
+
 
   return (
     <CartContext.Provider value={{
       cart,
       addProduct,
       removeProduct,
-      updateProductQuantity
+      updateProductQuantity,
+      productInCart
     }}>
       {children}
     </CartContext.Provider>

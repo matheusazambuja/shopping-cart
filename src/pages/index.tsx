@@ -22,6 +22,8 @@ export default function Home(props: HomeProps) {
         direction='column'
         alignItems='center'
         height='100vh'
+
+        fontFamily='Roboto'
       >
         <Header />
         <ProductList productsStock={props.productsStock}/>
