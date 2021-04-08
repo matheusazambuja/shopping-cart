@@ -3,6 +3,7 @@ import { Image } from "@chakra-ui/image";
 import { Input } from "@chakra-ui/input";
 import { Flex, Grid, ListItem, Text, UnorderedList } from "@chakra-ui/layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import Head from "next/head";
 import { useContext } from "react";
 import { Footer } from "../components/Footer";
@@ -53,17 +54,6 @@ export default function Cart() {
         fontFamily='Roboto'
       >
         <Header />
-        <Text as='div'
-          display='flex'
-          alignItems='center'
-          justifyContent='center'
-
-          height='4rem'
-          fontSize='1.6rem'
-          fontWeight='500'
-        >
-          Carrinho
-        </Text>
         <Grid as='div'
           templateColumns='1.5fr 0.6fr 0.9fr'
           templateRows='0.2fr 2.4fr 0.4fr'
@@ -161,42 +151,54 @@ export default function Cart() {
                   alignItems='center'
                   justifyContent='center'
                 >
-                  <Button type='button' onClick={() => handleDecrementQuantity({
-                      productId: cartItem.id,
-                      quantity: cartItem.quantity
-                    })}
-                    disabled={cartItem.quantity <= 1}
-
-                    background='transparent'
-                    color='blue.600'
-
-                    _hover={{
-                      background: 'blue.600',
-                      color: 'white'
-                    }}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    <FontAwesomeIcon icon='minus-circle' />
-                  </Button>
+                    <Button type='button' onClick={() => handleDecrementQuantity({
+                        productId: cartItem.id,
+                        quantity: cartItem.quantity
+                      })}
+                      disabled={cartItem.quantity <= 1}
+
+                      background='transparent'
+                      color='blue.600'
+
+                      _hover={{
+                        background: 'blue.600',
+                        color: 'white'
+                      }}
+                    >
+                      <FontAwesomeIcon icon='minus-circle' />
+                    </Button>
+                  </motion.div>
                   <Input type='text' readOnly value={cartItem.quantity}
                     width='58px'
                     margin='0 10px'
 
                     textAlign='center'
                   />
-                  <Button type='button' onClick={() => handleIncrementQuantity({
-                      productId: cartItem.id,
-                      quantity: cartItem.quantity
-                    })}
-                    background='transparent'
-                    color='blue.600'
-
-                    _hover={{
-                      background: 'blue.600',
-                      color: 'white'
-                    }}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    <FontAwesomeIcon icon='plus-circle' />
-                  </Button>
+                    <Button type='button' onClick={() => handleIncrementQuantity({
+                        productId: cartItem.id,
+                        quantity: cartItem.quantity
+                      })}
+                      background='transparent'
+                      color='blue.600'
+
+                      _hover={{
+                        background: 'blue.600',
+                        color: 'white'
+                      }}
+                    >
+                      <FontAwesomeIcon icon='plus-circle' />
+                    </Button>
+                  </motion.div>
                 </Flex>
                 <Flex as='div'
                   alignItems='center'
@@ -209,19 +211,26 @@ export default function Cart() {
                   >
                     {cartItem.subTotal}
                   </Text>
-                  <Button type='button' onClick={() => removeProduct(cartItem.id)}
-                    marginLeft='2rem'
-
-                    background='transparent'
-                    color='blue.600'
-
-                    _hover={{
-                      background: 'blue.600',
-                      color: 'white'
-                    }}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ delay: 0.2 }}
                   >
-                    <FontAwesomeIcon icon='trash' />
-                  </Button>
+                    <Button type='button' onClick={() => removeProduct(cartItem.id)}
+                      marginLeft='2rem'
+
+                      background='transparent'
+                      color='blue.600'
+
+                      _hover={{
+                        background: 'blue.600',
+                        color: 'white'
+                      }}
+                    >
+                      <FontAwesomeIcon icon='trash' />
+                    </Button>
+                  </motion.div>
                 </Flex>
               </ListItem>
             ))}

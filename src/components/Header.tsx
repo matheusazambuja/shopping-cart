@@ -1,5 +1,6 @@
 import { Box, Flex, Link } from "@chakra-ui/layout";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 
 
 export function Header() {
@@ -15,16 +16,26 @@ export function Header() {
       color='white'
       padding='17px 25px 14px 25px'
     >
-      <Link href='/'
-        fontSize='1.4rem'
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
       >
-        <FontAwesomeIcon icon='home'/>
-      </Link>
-      <Link href='/cart'
-        fontSize='1.4rem'
+        <Link href='/'
+          fontSize='1.4rem'
+        >
+          <FontAwesomeIcon icon='home'/>
+        </Link>
+      </motion.div>
+      <motion.div
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
       >
-        <FontAwesomeIcon icon='cart-plus' />
-      </Link>
+        <Link href='/cart'
+          fontSize='1.4rem'
+        >
+          <FontAwesomeIcon icon='cart-plus' />
+        </Link>
+      </motion.div>
     </Flex>
   )
 }
