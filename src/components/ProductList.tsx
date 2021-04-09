@@ -1,10 +1,10 @@
-import { Button, Flex, Image, ListItem, Text, UnorderedList, useControllableState } from '@chakra-ui/react'
+import { Button, Flex, Image, Text } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { CartContext } from '../contexts/CartContext';
 
-import { ProductInStock } from "../types";
+import { MotionLi, MotionUl, ProductInStock } from "../types";
 import { formatPrice } from '../utils/format';
 
 interface ProductListProps {
@@ -27,14 +27,33 @@ export function ProductList({ productsStock }: ProductListProps) {
     removeProduct(productId)
   }
 
+  const variantsMotionUl = {
+    hidden: { },
+    show: {
+      transition: {
+        delayChildren: 0.2,
+        staggerChildren: 0.2
+      }
+    }
+  }
+
+  const variantsMotionLi = {
+    hidden: { opacity: 0, scale: 0 },
+    show: { opacity: 1, scale: 1 }
+  }
+
   return (
-    <UnorderedList gridArea='productList'
+    <MotionUl gridArea='productList'
       display='flex'
       flexWrap='wrap'
       margin='0 15px'
+
+      variants={variantsMotionUl}
+      initial='hidden'
+      animate='show'
     >
-      {productsStock.map((product) => (
-        <ListItem key={product.id}
+      {productsStock.map((product, indexProduct) => (
+        <MotionLi key={product.id}
           display='flex'
           flexDirection='column'
           justifyContent='space-between'
@@ -46,6 +65,8 @@ export function ProductList({ productsStock }: ProductListProps) {
           boxShadow='-1px 0px 9px 3px rgba(0,0,0,0.08)'
           margin='15px'
           padding='12px'
+
+          variants={variantsMotionLi}
         >
           <Flex as='div'
             direction='column'
@@ -53,7 +74,7 @@ export function ProductList({ productsStock }: ProductListProps) {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: indexProduct * 0.2 }}
             >
               <Image src={product.imageURL} alt={product.name} 
                 width='17rem'
@@ -64,7 +85,7 @@ export function ProductList({ productsStock }: ProductListProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ ease: 'easeOut', duration: 0.5 }}
+              transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
             >
               <Text as='span'
                 color='gray.500'
@@ -84,14 +105,31 @@ export function ProductList({ productsStock }: ProductListProps) {
               marginBottom='7px'
               marginTop='9px'
             >
-              {formatPrice(product.price)}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
+              >
+                {formatPrice(product.price)}
+              </motion.div>
             </Text>
             {!productInCart(product.id) ? (
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.9 }}
+                whileHover={{
+                  scale: 1.02,
+                  transition: {
+                    delay: 0
+                  }
+                }}
+                whileTap={{ 
+                  scale: 0.9, 
+                  transition: { 
+                    delay: 0.2
+                  }
+                }}
+                
               >
                 <Button type='button' onClick={() => handleAddProduct(product.id)}
                   background='green.400'
@@ -116,7 +154,7 @@ export function ProductList({ productsStock }: ProductListProps) {
                 <motion.div
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.1 }}
+                  transition={{ delay: 0.2 }}
                 >
                   <Text as='span'
                     display='flex'
@@ -138,7 +176,7 @@ export function ProductList({ productsStock }: ProductListProps) {
                 <motion.div
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.1 }}
+                  transition={{ delay: 0.2 }}
                 >
                   <Button type='button' onClick={() => handleRemoveProduct(product.id)}
 
@@ -152,8 +190,8 @@ export function ProductList({ productsStock }: ProductListProps) {
               </Flex>
             )}
           </Flex>
-        </ListItem>
+        </MotionLi>
       ))}
-    </UnorderedList>
+    </MotionUl>
   )
 }
