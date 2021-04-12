@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Text } from '@chakra-ui/react'
+import { Button, Flex, Image, Text, toast, useToast } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
@@ -27,6 +27,8 @@ export function ProductList({ productsStock }: ProductListProps) {
     removeProduct(productId)
   }
 
+  const toast = useToast()
+
   const variantsMotionUl = {
     hidden: { },
     show: {
@@ -46,7 +48,10 @@ export function ProductList({ productsStock }: ProductListProps) {
     <MotionUl gridArea='productList'
       display='flex'
       flexWrap='wrap'
-      margin='0 15px'
+      padding='0 15px'
+
+      background='gray.700'
+      color='whiteAlpha.700'
 
       variants={variantsMotionUl}
       initial='hidden'
@@ -58,9 +63,9 @@ export function ProductList({ productsStock }: ProductListProps) {
           flexDirection='column'
           justifyContent='space-between'
 
-          width='18rem'
+          width='16rem'
 
-          background='gray.200'
+          background='gray.500'
           borderRadius='9px'
           boxShadow='-1px 0px 9px 3px rgba(0,0,0,0.08)'
           margin='15px'
@@ -77,7 +82,7 @@ export function ProductList({ productsStock }: ProductListProps) {
               transition={{ delay: indexProduct * 0.2 }}
             >
               <Image src={product.imageURL} alt={product.name} 
-                width='17rem'
+                width='15rem'
                 borderRadius='9px'
                 paddingBottom='4px'
               />
@@ -88,8 +93,7 @@ export function ProductList({ productsStock }: ProductListProps) {
               transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
             >
               <Text as='span'
-                color='gray.500'
-                fontSize='0.97rem'
+                fontSize='0.89rem'
                 fontWeight='500'
               >
                 {product.name}
@@ -100,6 +104,7 @@ export function ProductList({ productsStock }: ProductListProps) {
             direction='column'
           >
             <Text as='span'
+              color='whiteAlpha.900'
               fontSize='1.08rem'
               fontWeight='700'
               marginBottom='7px'
@@ -129,10 +134,20 @@ export function ProductList({ productsStock }: ProductListProps) {
                     delay: 0.2
                   }
                 }}
-                
               >
-                <Button type='button' onClick={() => handleAddProduct(product.id)}
+                <Button type='button' onClick={() => {
+                  handleAddProduct(product.id)
+                  toast({
+                    position: 'top-right',
+                    title: 'Produto adicionado',
+                    description: 'O produto foi adicionado ao carrinho com sucesso',
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true
+                  })
+                }}
                   background='green.400'
+                  color='whiteAlpha.900'
                   boxShadow='-1px 0px 3px 1px rgba(0,0,0,0.21)'
                   fontSize='1.07rem'
                   fontWeight='500'
@@ -149,7 +164,7 @@ export function ProductList({ productsStock }: ProductListProps) {
             :
             (
               <Flex as='div'
-
+                color='whiteAlpha.900'
               >
                 <motion.div
                   initial={{ scaleX: 0 }}
@@ -161,11 +176,11 @@ export function ProductList({ productsStock }: ProductListProps) {
                     alignItems='center'
                     justifyContent='center'
                     height='100%'
-                    width='13rem'
+                    width='11.5rem'
 
-                    background='blue.600'
+                    background='cyan.500'
                     borderRadius='6px'
-                    fontSize='1.07rem'
+                    fontSize='1.04rem'
                     fontWeight='500'
 
                     marginRight='7px'
@@ -178,10 +193,22 @@ export function ProductList({ productsStock }: ProductListProps) {
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <Button type='button' onClick={() => handleRemoveProduct(product.id)}
+                  <Button type='button' onClick={() => {
+                    handleRemoveProduct(product.id)
+                    toast({
+                      position: 'top-right',
+                      title: 'Removido do carrinho',
+                      description: 'O produto foi retirado do carrinho',
+                      status: 'info',
+                      duration: 3000,
+                      isClosable: true
+                    })
+                  }}
+                    color='black'
 
                     _hover={{
-                      background: 'red.600'
+                      background: 'red.600',
+                      color: 'whiteAlpha.900'
                     }}
                   >
                     <FontAwesomeIcon icon='times' />

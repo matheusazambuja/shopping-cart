@@ -6,13 +6,14 @@ import { motion } from "framer-motion";
 export function Header() {
 
   return (
-    <Flex as='header' gridArea='headers'
+    <Flex as='header' gridArea='header'
       alignItems='center'
       justifyContent='space-between'
 
       width='100%'
+      height='4rem'
 
-      background='blue.600'
+      background='gray.500'
       color='white'
       padding='17px 25px 14px 25px'
     >
@@ -22,6 +23,10 @@ export function Header() {
       >
         <Link href='/'
           fontSize='1.4rem'
+
+          _hover={{
+            color: 'cyan.500'
+          }}
         >
           <FontAwesomeIcon icon='home'/>
         </Link>
@@ -32,6 +37,10 @@ export function Header() {
       >
         <Link href='/cart'
           fontSize='1.4rem'
+
+          _hover={{
+            color: 'cyan.500'
+          }}
         >
           <FontAwesomeIcon icon='cart-plus' />
         </Link>

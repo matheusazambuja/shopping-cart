@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { ProductInCart } from '../types'
 import { products } from '../products.json'
+import { toast } from "react-toastify";
 
 export interface UpdateProductQuantity {
   productId: number;
@@ -38,21 +39,76 @@ export function CartProvider({
 
 
   async function addProduct(productId: number) {
-    const indexProduct = cart.findIndex((product) => product.id === productId)
+    try {
+      const indexProduct = cart.findIndex((product) => product.id === productId)
 
-    if (indexProduct === -1) {
-      const productStockSelected = products.filter(product => product.id === productId)[0]
+      if (indexProduct === -1) {
+        const productStockSelected = products.filter(product => product.id === productId)[0]
 
-      const cartUpdated = [ ...cart, { ...productStockSelected, quantity: 1, inCart: true } ]
+        const cartUpdated = [ ...cart, { ...productStockSelected, quantity: 1, inCart: true } ]
+
+        setCart(cartUpdated)
+        localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
+      } else {
+
+        const cartUpdated = cart.map((product) => {
+
+          if (product.id === productId) {
+            return { ...product, quantity: product.quantity + 1 }
+          }
+
+          return product
+        })
+
+        setCart(cartUpdated)
+        localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
+      }
+    }
+    catch {
+      toast.error('Erro na adição do produto')
+    }
+  }
+
+  function removeProduct(productId: number) {
+    try {
+      const indexProduct = cart.findIndex((product) => product.id === productId)
+
+      if (indexProduct === -1) {
+        toast.error('Produto não encontrado no carrinho')
+        return
+      }
+
+      const cartUpdated = cart.filter((product) => product.id !== productId)
 
       setCart(cartUpdated)
       localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
-    } else {
+    }
+    catch {
+      toast.error('Erro na remoção do produto')
+    }
+  }
+
+  async function updateProductQuantity ({
+    productId, quantity
+  }: UpdateProductQuantity) {
+    
+    try {
+      const productStockSelected = products.filter(product => product.id === productId)[0]
+
+      if (quantity <= 0) {
+        // Gerar error: Não é possível adicionar um quantidade menor que 1
+        return
+      }
+
+      if (productStockSelected.quantity < quantity) {
+        // Gerar erro: Quantidade fora de estoque
+        return
+      }
 
       const cartUpdated = cart.map((product) => {
 
         if (product.id === productId) {
-          return { ...product, quantity: product.quantity + 1 }
+          return { ...product, quantity: quantity }
         }
 
         return product
@@ -61,49 +117,9 @@ export function CartProvider({
       setCart(cartUpdated)
       localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
     }
-  }
-
-  function removeProduct(productId: number) {
-    const indexProduct = cart.findIndex((product) => product.id === productId)
-
-    if (indexProduct === -1) {
-      // Gerar erro: Produto nao encontrado no carrinho
-      return
+    catch {
+      toast.error('Erro na alteração de quantidade do produto')
     }
-
-    const cartUpdated = cart.filter((product) => product.id !== productId)
-
-    setCart(cartUpdated)
-    localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
-  }
-
-  async function updateProductQuantity ({
-    productId, quantity
-  }: UpdateProductQuantity) {
-    
-    const productStockSelected = products.filter(product => product.id === productId)[0]
-
-    if (quantity <= 0) {
-      // Gerar error: Não é possível adicionar um quantidade menor que 1
-      return
-    }
-
-    if (productStockSelected.quantity < quantity) {
-      // Gerar erro: Quantidade fora de estoque
-      return
-    }
-
-    const cartUpdated = cart.map((product) => {
-
-      if (product.id === productId) {
-        return { ...product, quantity: quantity }
-      }
-
-      return product
-    })
-
-    setCart(cartUpdated)
-    localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
   }
 
   function productInCart(productId: number) {
@@ -113,7 +129,6 @@ export function CartProvider({
 
     return true
   }
-
 
   return (
     <CartContext.Provider value={{

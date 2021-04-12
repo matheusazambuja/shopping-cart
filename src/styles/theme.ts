@@ -1,8 +1,14 @@
 import { theme, extendTheme } from '@chakra-ui/react'
-import { createBreakpoints } from '@chakra-ui/theme-tools'
 
 
 export const customTheme = extendTheme({
+  styles: {
+    global: {
+      "html, body": {
+        background: 'gray.700'
+      }
+    }
+  },
   breakpoints: {
     ...theme.breakpoints
   },
@@ -27,7 +33,7 @@ export const customTheme = extendTheme({
       330: '#DCDDE0',
       500: '#2D2D38',
       600: '#29292E',
-      700: '#202024',
+      700: '#202020',
       900: '#666',
       1000: '#202024'
     },
