@@ -52,7 +52,7 @@ export const customTheme = extendTheme({
     },
     green: {
       ...theme.colors.green,
-      400: '#4CD62B'
+      400: '#17B512'
     }
   }
 })

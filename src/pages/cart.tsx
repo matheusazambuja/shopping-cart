@@ -98,11 +98,11 @@ export default function Cart() {
           <Text as='strong' gridArea='infoColumn'
             display='flex'
             alignItems='center'
-            justifyContent='center'
+            justifyContent='flex-start'
 
-            fontSize='1.1rem'
+            fontSize='1rem'
             textTransform='uppercase'
-            marginRight='1.7rem'
+            marginLeft='11.7rem'
           >
             Produto
           </Text>
@@ -111,7 +111,7 @@ export default function Cart() {
             alignItems='center'
             justifyContent='center'
 
-            fontSize='1.1rem'
+            fontSize='1rem'
             textTransform='uppercase'
 
             marginRight='6rem'
@@ -123,7 +123,7 @@ export default function Cart() {
             alignItems='center'
             justifyContent='flex-start'
 
-            fontSize='1.1rem'
+            fontSize='1rem'
             textTransform='uppercase'
 
             paddingLeft='5rem'
@@ -149,6 +149,8 @@ export default function Cart() {
                       'infoProduct quantityProduct subtotalProduct'
                     "
 
+                    height='10rem'
+
                     background='gray.500'
                     color='whiteAlpha.900'
                     boxShadow='-1px 0px 9px 3px rgba(0,0,0,0.08)'
@@ -165,7 +167,7 @@ export default function Cart() {
                       alignItems='center'
                     >
                       <Image src={cartItem.imageURL} alt={cartItem.name}
-                        width='12rem'
+                        width='9.5rem'
 
                         borderRadius='17px'
                         margin='2px'
@@ -174,15 +176,16 @@ export default function Cart() {
                       <Flex as='div'
                         direction='column'
 
-                        marginLeft='4rem'
+                        marginLeft='2rem'
                       >
                         <Text as='span'
-                          fontSize='1.1rem'
+                          color='whiteAlpha.800'
+                          fontSize='1rem'
                         >
                           {cartItem.name}
                         </Text>
                         <Text as='strong'
-                          fontSize='1.25rem'
+                          fontSize='1.15rem'
                         >
                           {cartItem.priceFormatted}
                         </Text>
@@ -371,7 +374,7 @@ export default function Cart() {
               </Text>
               <Text as='span'
 
-                fontSize='1.7rem'
+                fontSize='2rem'
                 fontWeight='700'
               >
                 {total}

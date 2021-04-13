@@ -51,7 +51,7 @@ export function ProductList({ productsStock }: ProductListProps) {
       padding='0 15px'
 
       background='gray.700'
-      color='whiteAlpha.700'
+      color='whiteAlpha.800'
 
       variants={variantsMotionUl}
       initial='hidden'
@@ -63,7 +63,7 @@ export function ProductList({ productsStock }: ProductListProps) {
           flexDirection='column'
           justifyContent='space-between'
 
-          width='16rem'
+          width='14rem'
 
           background='gray.500'
           borderRadius='9px'
@@ -82,7 +82,7 @@ export function ProductList({ productsStock }: ProductListProps) {
               transition={{ delay: indexProduct * 0.2 }}
             >
               <Image src={product.imageURL} alt={product.name} 
-                width='15rem'
+                width='13rem'
                 borderRadius='9px'
                 paddingBottom='4px'
               />
@@ -176,7 +176,7 @@ export function ProductList({ productsStock }: ProductListProps) {
                     alignItems='center'
                     justifyContent='center'
                     height='100%'
-                    width='11.5rem'
+                    width='9.5rem'
 
                     background='cyan.500'
                     borderRadius='6px'
