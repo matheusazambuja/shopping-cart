@@ -374,7 +374,7 @@ export default function Cart() {
               </Text>
               <Text as='span'
 
-                fontSize='2rem'
+                fontSize='1.7rem'
                 fontWeight='700'
               >
                 {total}

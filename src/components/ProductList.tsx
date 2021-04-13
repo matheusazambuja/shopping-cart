@@ -1,4 +1,4 @@
-import { Button, Flex, Image, Text, toast, useToast } from '@chakra-ui/react'
+import { Button, Flex, Image, Text, useToast } from '@chakra-ui/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
@@ -45,8 +45,9 @@ export function ProductList({ productsStock }: ProductListProps) {
   }
 
   return (
-    <MotionUl gridArea='productList'
+    <MotionUl gridArea='content'
       display='flex'
+      justifyContent='space-between'
       flexWrap='wrap'
       padding='0 15px'
 
@@ -61,9 +62,11 @@ export function ProductList({ productsStock }: ProductListProps) {
         <MotionLi key={product.id}
           display='flex'
           flexDirection='column'
+          alignItems='center'
           justifyContent='space-between'
 
-          width='14rem'
+          width='11rem'
+          height='22rem'
 
           background='gray.500'
           borderRadius='9px'
@@ -82,7 +85,7 @@ export function ProductList({ productsStock }: ProductListProps) {
               transition={{ delay: indexProduct * 0.2 }}
             >
               <Image src={product.imageURL} alt={product.name} 
-                width='13rem'
+                width='12rem'
                 borderRadius='9px'
                 paddingBottom='4px'
               />
@@ -92,9 +95,11 @@ export function ProductList({ productsStock }: ProductListProps) {
               animate={{ opacity: 1 }}
               transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
             >
-              <Text as='span'
-                fontSize='0.89rem'
+              <Text as='span' noOfLines={3}
+                fontSize='0.86rem'
                 fontWeight='500'
+
+                paddingTop='8px'
               >
                 {product.name}
               </Text>
@@ -105,7 +110,7 @@ export function ProductList({ productsStock }: ProductListProps) {
           >
             <Text as='span'
               color='whiteAlpha.900'
-              fontSize='1.08rem'
+              fontSize='1.05rem'
               fontWeight='700'
               marginBottom='7px'
               marginTop='9px'
@@ -149,9 +154,10 @@ export function ProductList({ productsStock }: ProductListProps) {
                   background='green.400'
                   color='whiteAlpha.900'
                   boxShadow='-1px 0px 3px 1px rgba(0,0,0,0.21)'
-                  fontSize='1.07rem'
+                  fontSize='0.87rem'
                   fontWeight='500'
                   width='100%'
+                  size='sm'
                   
                   _hover={{
                     filter: 'brightness(0.97)'
@@ -176,11 +182,11 @@ export function ProductList({ productsStock }: ProductListProps) {
                     alignItems='center'
                     justifyContent='center'
                     height='100%'
-                    width='9.5rem'
+                    width='7rem'
 
                     background='cyan.500'
                     borderRadius='6px'
-                    fontSize='1.04rem'
+                    fontSize='0.94rem'
                     fontWeight='500'
 
                     marginRight='7px'
@@ -204,7 +210,9 @@ export function ProductList({ productsStock }: ProductListProps) {
                       isClosable: true
                     })
                   }}
+                    size='sm'
                     color='black'
+                    fontSize='0.95rem'
 
                     _hover={{
                       background: 'red.600',

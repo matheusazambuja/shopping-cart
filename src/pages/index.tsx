@@ -18,9 +18,15 @@ export default function Home(props: HomeProps) {
       <Head>
         <title>Home - ShoppingCart</title>
       </Head>
-      <Flex as='div'
-        direction='column'
-        alignItems='center'
+      <Grid as='div'
+        templateColumns='1fr'
+        templateRows='0.2fr 2.5fr 0.3fr'
+        templateAreas="
+          'header'
+          'content'
+          'footer'
+        "
+
         height='100vh'
 
         fontFamily='Roboto'
@@ -28,7 +34,7 @@ export default function Home(props: HomeProps) {
         <Header />
         <ProductList productsStock={products}/>
         <Footer />
-      </Flex>
+      </Grid>
     </>
   )
 }
