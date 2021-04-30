@@ -5,7 +5,7 @@ import { Footer } from '../components/Footer'
 import { Header } from '../components/Header'
 import { ProductList } from '../components/ProductList'
 
-import { products } from '../products.json'
+import { products } from '../../db.json'
 import { ProductInStock } from '../types'
 
 interface HomeProps {
@@ -28,8 +28,6 @@ export default function Home(props: HomeProps) {
         "
 
         height='100vh'
-
-        fontFamily='Roboto'
       >
         <Header />
         <ProductList productsStock={products}/>
@@ -38,14 +36,3 @@ export default function Home(props: HomeProps) {
     </>
   )
 }
-
-
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { data: productsStock } = JSON.parse('')
-
-//   return {
-//     props: {
-//       productsStock
-//     }
-//   }
-// }

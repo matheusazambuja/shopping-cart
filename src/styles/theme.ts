@@ -4,8 +4,27 @@ import { theme, extendTheme } from '@chakra-ui/react'
 export const customTheme = extendTheme({
   styles: {
     global: {
-      "html, body": {
-        background: 'gray.700'
+      '*': {
+        margin: 0,
+        padding: 0,
+        boxSizing: 'border-box'
+      },
+
+      body: {
+        background: 'gray.50',
+      },
+
+      'body, input, textarea, button': {
+        font: '500 1rem Inter, sans-serif',
+        color: 'gray.500'
+      },
+
+      button: {
+        cursor: 'pointer'
+      },
+
+      'img': {
+        borderRadius: '0.5rem'
       }
     }
   },
@@ -28,14 +47,15 @@ export const customTheme = extendTheme({
     ...theme.colors,
     gray: {
       ...theme.colors.gray,
-      100: "#f0f1f3",
-      300: '#D8D8D8',
-      330: '#DCDDE0',
-      500: '#2D2D38',
-      600: '#29292E',
-      700: '#202020',
-      900: '#666',
-      1000: '#202024'
+      50: '#F7F8FA',
+      100: '#E6E8EB',
+      200: '#AFB2B1',
+      500: '#808080',
+      700: '#494D4B',
+      800: '#37474F',
+      830: '#202024',
+      850: '#282A36',
+      900: '#121214'
     },
     blue: {
       ...theme.colors.blue,
@@ -52,7 +72,7 @@ export const customTheme = extendTheme({
     },
     green: {
       ...theme.colors.green,
-      400: '#17B512'
+      400: '#04D361'
     }
   }
 })

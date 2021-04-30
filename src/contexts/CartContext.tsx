@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { ProductInCart } from '../types'
-import { products } from '../products.json'
+import { products } from '../../db.json'
 import { toast } from "react-toastify";
 
 export interface UpdateProductQuantity {
@@ -33,10 +33,13 @@ export function CartProvider({
   useEffect(() => {
     const storagedCart = localStorage.getItem('@ShoppingCart:cart')
 
-    if (storagedCart) setCart(JSON.parse(storagedCart))
+    if (storagedCart) {
+      const storagedCartFormatted = JSON.parse(storagedCart)
+
+      setCart(storagedCartFormatted)
+    }
 
   }, [])
-
 
   async function addProduct(productId: number) {
     try {

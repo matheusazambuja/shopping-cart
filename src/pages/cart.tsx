@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/button";
 import { Image } from "@chakra-ui/image";
 import { Input } from "@chakra-ui/input";
 import { Box, Flex, Grid, Link, Text } from "@chakra-ui/layout";
+import { useColorModeValue } from "@chakra-ui/react";
 import { toast, useToast } from "@chakra-ui/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
@@ -59,11 +60,21 @@ export default function Cart() {
     exit: { opacity: 0, scale: 0 }
   }
 
+  const colorModeObject = {
+    backgroundHome: useColorModeValue('gray.50', 'gray.850'),
+    colorButtonCheckout: useColorModeValue('gray.800', 'gray.100'),
+    colorButtonCheckoutHover: useColorModeValue('gray.100', 'gray.800'),
+    backgroundProduct: useColorModeValue('gray.50', 'gray.800'),
+    backgroundCheckout: useColorModeValue('gray.50', 'gray.800'),
+    colorProductName: useColorModeValue('gray.800', 'gray.100'),
+    colorPrice: useColorModeValue('gray.900', 'gray.100'),
+    colorButtonRemove: useColorModeValue('gray.900', 'gray.100'),
+  }
+
 
   return (
     <Box as='div'
-      
-      background='gray.700'
+      background={colorModeObject.backgroundHome}
     >
       <Head>
         <title>Carrinho - ShoppingCart</title>
@@ -78,8 +89,6 @@ export default function Cart() {
         "
 
         height='100vh'
-
-        fontFamily='Roboto'
       >
         <Header />
         <Grid as='div' gridArea='content'
@@ -91,8 +100,8 @@ export default function Cart() {
             'checkout checkout checkout'
           "
 
-          margin='17px 10px'
-          background='gray.700'
+          margin='1rem 0.8rem'
+          background='transparent'
           color='cyan.500'
         >
           <Text as='strong' gridArea='infoColumn'
@@ -137,7 +146,7 @@ export default function Cart() {
               initial='hidden'
               animate='show'
 
-              color='whiteAlpha.900'
+              color={colorModeObject.colorProductName}
             >
               {cartFormatted.map((cartItem) => (
                 <AnimatePresence>
@@ -151,17 +160,15 @@ export default function Cart() {
 
                     height='10rem'
 
-                    background='gray.500'
-                    color='whiteAlpha.900'
+                    background={colorModeObject.backgroundProduct}
+                    color={colorModeObject.colorProductName}
                     boxShadow='-1px 0px 9px 3px rgba(0,0,0,0.08)'
                     borderRadius='10px'
 
-                    margin='20px 0'
+                    margin='1.2rem 0'
 
                     variants={variantsMotionLi}
-                    initial='hidden'
-                    animate='show'
-                    exit='exit'
+                    initial='hidden' animate='show' exit='exit'
                   >
                     <Flex as='div' gridArea='infoProduct'
                       alignItems='center'
@@ -179,8 +186,10 @@ export default function Cart() {
                         marginLeft='2rem'
                       >
                         <Text as='span'
-                          color='whiteAlpha.800'
+                          color={colorModeObject.colorProductName}
                           fontSize='1rem'
+                          lineHeight='1.4rem'
+                          marginBottom='1rem'
                         >
                           {cartItem.name}
                         </Text>
@@ -300,27 +309,20 @@ export default function Cart() {
               marginTop='20px'
               marginBottom='16px'
 
-              background='gray.500'
+              background='transparent'
             >
               <Text as='span'
-                color='white'
+                color={colorModeObject.colorProductName}
                 fontSize='1.2rem'
-                fontWeight='500'
+                fontWeight='600'
                 fontStyle='italic'
               >
-                Carrinho vazio
+                Vamos voltar as compras!
               </Text>
               <Button type='button'
-                background='cyan.500'
-                color='white'
+                background='transparent'
               >
-                <Link href='/'
-                  fontSize='1.4rem'
-
-                  _hover={{
-                    color: 'cyan.500'
-                  }}
-                >
+                <Link href='/' fontSize='1.7rem'>
                   <FontAwesomeIcon icon='home'/>
                 </Link>
               </Button>
@@ -334,8 +336,7 @@ export default function Cart() {
 
             padding='30px 25px 20px 15px'
 
-            background='gray.500'
-            color='whiteAlpha.900'
+            background={colorModeObject.backgroundCheckout}
           >
             <Button type='button' onClick={() => {
               toast({
@@ -348,16 +349,15 @@ export default function Cart() {
               })
             }}
               background='green.400'
-              boxShadow='0px 0px 3px 2px rgba(0,0,0,0.38)'
+              boxShadow='0px 0px 3px 2px rgba(0,0,0,0.28)'
               textTransform='uppercase'
+              color={colorModeObject.colorButtonCheckout}
 
               width='14rem'
 
-              color='whiteAlpha.900'
-
               _hover={{
-                background: 'cyan.500',
-                color: 'white'
+                // background: 'green.400',
+                color: colorModeObject.colorButtonCheckoutHover
               }}
             >
               Finalizar compra
@@ -367,15 +367,15 @@ export default function Cart() {
             >
               <Text as='span'
                 color='gray.400'
-                fontWeight='500'
-                marginRight='3px'
+                fontWeight='600'
+                marginRight='0.7rem'
               >
                 TOTAL
               </Text>
               <Text as='span'
 
                 fontSize='1.7rem'
-                fontWeight='700'
+                fontWeight='600'
               >
                 {total}
               </Text>

@@ -1,11 +1,14 @@
-import { Button, Flex, Image, Text, useToast } from '@chakra-ui/react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { motion } from 'framer-motion';
-import { useContext } from 'react';
-import { CartContext } from '../contexts/CartContext';
+import { useContext, useState } from 'react';
+import Image from 'next/image'
 
+import { CartContext } from '../contexts/CartContext';
 import { MotionLi, MotionUl, ProductInStock } from "../types";
 import { formatPrice } from '../utils/format';
+
+import { Badge, Box, Button, Center, Divider, Flex, Text, useColorModeValue, useToast } from '@chakra-ui/react'
+import { motion } from 'framer-motion';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 interface ProductListProps {
   productsStock: ProductInStock[]
@@ -14,10 +17,19 @@ interface ProductListProps {
 export function ProductList({ productsStock }: ProductListProps) {
 
   const {
+    cart,
     addProduct,
     removeProduct,
     productInCart
   } = useContext(CartContext)
+
+  const [productSelected, setProductSelected] = useState<ProductInStock>({} as ProductInStock)
+
+  function handleProductSelected(productId: number) {
+    const productSelected = productsStock.filter((productStock) => productStock.id === productId)[0]
+
+    setProductSelected(productSelected)
+  }
 
   function handleAddProduct(productId: number) {
     addProduct(productId)
@@ -44,188 +56,219 @@ export function ProductList({ productsStock }: ProductListProps) {
     show: { opacity: 1, scale: 1 }
   }
 
+  const colorModeObject = {
+    backgroundHome: useColorModeValue('gray.50', 'gray.850'),
+    backgroundProduct: useColorModeValue('gray.50', 'gray.800'),
+    colorProductName: useColorModeValue('gray.800', 'gray.100'),
+    colorPrice: useColorModeValue('gray.900', 'gray.100'),
+    colorButtonRemove: useColorModeValue('gray.900', 'gray.100'),
+  }
+
   return (
-    <MotionUl gridArea='content'
-      display='flex'
-      justifyContent='space-between'
-      flexWrap='wrap'
-      padding='0 15px'
+    <MotionUl gridArea='content' display='flex' flexWrap='wrap'
+      justifyContent='center'
+      padding='0 1rem' width='100%'
 
-      background='gray.700'
-      color='whiteAlpha.800'
-
-      variants={variantsMotionUl}
-      initial='hidden'
-      animate='show'
+      background={colorModeObject.backgroundHome} color='whiteAlpha.800'
+      variants={variantsMotionUl} initial='hidden' animate='show'
     >
       {productsStock.map((product, indexProduct) => (
-        <MotionLi key={product.id}
-          display='flex'
-          flexDirection='column'
-          alignItems='center'
-          justifyContent='space-between'
+        <>
+          <MotionLi key={product.id} data-key={product.id}
 
-          width='11rem'
-          height='22rem'
+            listStyleType='none'
+            width='24rem'
+            height='fit-content'
 
-          background='gray.500'
-          borderRadius='9px'
-          boxShadow='-1px 0px 9px 3px rgba(0,0,0,0.08)'
-          margin='15px'
-          padding='12px'
+            background={colorModeObject.backgroundProduct}
+            borderRadius='0.5rem'
+            boxShadow='-1px 0px 9px 3px rgba(0,0,0,0.08)'
+            color={colorModeObject.colorProductName}
+            margin='2rem'
+            padding='0.75rem'
 
-          variants={variantsMotionLi}
-        >
-          <Flex as='div'
-            direction='column'
+            variants={variantsMotionLi}
           >
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: indexProduct * 0.2 }}
             >
-              <Image src={product.imageURL} alt={product.name} 
-                width='12rem'
-                borderRadius='9px'
-                paddingBottom='4px'
-              />
+              <Box as='div'
+                onClick={(event) => {
+                  handleProductSelected(Number(event.currentTarget.parentElement.parentElement.parentElement.getAttribute('data-key')))
+                }}
+                width='22rem'
+                borderRadius='0.5rem'
+                margin='auto'
+
+                _hover={{
+                  cursor: 'pointer'
+                }}
+              >
+                <Image 
+                  alt={product.name} 
+                  src={product.imageURL} 
+                  width={768}
+                  height={640}
+                  objectFit='cover'
+                />
+              </Box>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
+            <Flex as='div'
+              direction='column'
             >
-              <Text as='span' noOfLines={3}
-                fontSize='0.86rem'
-                fontWeight='500'
-
-                paddingTop='8px'
+              <Box as='div'
+                d='flex' alignItems='center' margin='0.7rem 0.5rem'
+                height='3.25rem'
               >
-                {product.name}
-              </Text>
-            </motion.div>
-          </Flex>
-          <Flex as='div'
-            direction='column'
-          >
-            <Text as='span'
-              color='whiteAlpha.900'
-              fontSize='1.05rem'
-              fontWeight='700'
-              marginBottom='7px'
-              marginTop='9px'
-            >
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
-              >
-                {formatPrice(product.price)}
-              </motion.div>
-            </Text>
-            {!productInCart(product.id) ? (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                whileHover={{
-                  scale: 1.02,
-                  transition: {
-                    delay: 0
-                  }
-                }}
-                whileTap={{ 
-                  scale: 0.9, 
-                  transition: { 
-                    delay: 0.2
-                  }
-                }}
-              >
-                <Button type='button' onClick={() => {
-                  handleAddProduct(product.id)
-                  toast({
-                    position: 'top-right',
-                    title: 'Produto adicionado',
-                    description: 'O produto foi adicionado ao carrinho com sucesso',
-                    status: 'success',
-                    duration: 3000,
-                    isClosable: true
-                  })
-                }}
-                  background='green.400'
-                  color='whiteAlpha.900'
-                  boxShadow='-1px 0px 3px 1px rgba(0,0,0,0.21)'
-                  fontSize='0.87rem'
-                  fontWeight='500'
-                  width='100%'
-                  size='sm'
-                  
-                  _hover={{
-                    filter: 'brightness(0.97)'
-                  }}
-                >
-                  Adicionar ao carrinho
-                </Button>
-              </motion.div>
-            )
-            :
-            (
-              <Flex as='div'
-                color='whiteAlpha.900'
-              >
+                <Badge borderRadius="full" px="3" colorScheme="teal">
+                  New
+                </Badge>
+                <Box height="3.25rem" margin='0 1rem'>
+                  <Divider orientation="vertical" />
+                </Box>
                 <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.2 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
                 >
-                  <Text as='span'
-                    display='flex'
-                    alignItems='center'
-                    justifyContent='center'
-                    height='100%'
-                    width='7rem'
-
-                    background='cyan.500'
-                    borderRadius='6px'
-                    fontSize='0.94rem'
-                    fontWeight='500'
-
-                    marginRight='7px'
-                  >
-                    No carrinho
-                  </Text>
-                </motion.div>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  <Button type='button' onClick={() => {
-                    handleRemoveProduct(product.id)
-                    toast({
-                      position: 'top-right',
-                      title: 'Removido do carrinho',
-                      description: 'O produto foi retirado do carrinho',
-                      status: 'info',
-                      duration: 3000,
-                      isClosable: true
-                    })
+                  <Text as='span' noOfLines={2} onClick={(event) => {
+                    handleProductSelected(Number(event.currentTarget.parentElement.parentElement.parentElement.getAttribute('data-key')))
                   }}
-                    size='sm'
-                    color='black'
-                    fontSize='0.95rem'
+                    fontSize='0.9rem'
+                    fontWeight='600'
+                    lineHeight='1.25rem'
 
                     _hover={{
-                      background: 'red.600',
-                      color: 'whiteAlpha.900'
+                      cursor: 'pointer'
                     }}
                   >
-                    <FontAwesomeIcon icon='times' />
-                  </Button>
+                    {product.name}
+                  </Text>
                 </motion.div>
-              </Flex>
-            )}
-          </Flex>
-        </MotionLi>
+              </Box>
+              <Box as='div'
+                d='flex' alignItems='center' justifyContent='space-around'
+                margin='0.5rem'
+              >
+                <Text as='span'
+                  color={colorModeObject.colorPrice}
+                  fontSize='1.1rem'
+                  fontWeight='600'
+                >
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
+                  >
+                    {formatPrice(product.price)}
+                  </motion.div>
+                </Text>
+                {!productInCart(product.id) ? (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    whileHover={{
+                      scale: 1.02,
+                      transition: {
+                        delay: 0
+                      }
+                    }}
+                    whileTap={{ 
+                      scale: 0.9, 
+                      transition: { 
+                        delay: 0.2
+                      }
+                    }}
+                  >
+                    <Button type='button' onClick={() => {
+                      handleAddProduct(product.id)
+                      toast({
+                        position: 'top-right',
+                        title: 'Produto adicionado',
+                        description: 'O produto foi adicionado ao carrinho com sucesso',
+                        status: 'success',
+                        duration: 3000,
+                        isClosable: true
+                      })
+                    }}
+                      background='green.400'
+                      color='whiteAlpha.900'
+                      boxShadow='-1px 0px 3px 1px rgba(0,0,0,0.21)'
+                      fontWeight='600'
+                      size='md'
+                      
+                      _hover={{
+                        filter: 'brightness(0.97)'
+                      }}
+                      
+                    >
+                      Adicionar ao carrinho
+                    </Button>
+                  </motion.div>
+                )
+                :
+                (
+                  <Flex as='div'
+                    color='whiteAlpha.900'
+                  >
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <Text as='span'
+                        display='flex'
+                        alignItems='center'
+                        justifyContent='center'
+                        height='100%'
+                        width='8rem'
+
+                        background='teal.500'
+                        borderRadius='0.4rem'
+                        fontSize='1rem'
+                        fontWeight='600'
+
+                        marginRight='0.5rem'
+                      >
+                        No carrinho
+                      </Text>
+                    </motion.div>
+                    <motion.div
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <Button type='button' onClick={() => {
+                        handleRemoveProduct(product.id)
+                        toast({
+                          position: 'top-right',
+                          title: 'Removido do carrinho',
+                          description: 'O produto foi retirado do carrinho',
+                          status: 'info',
+                          duration: 3000,
+                          isClosable: true
+                        })
+                      }}
+                        size='md'
+                        color={colorModeObject.colorButtonRemove}
+                        fontSize='0.95rem'
+
+                        _hover={{
+                          background: 'red.600',
+                          color: 'whiteAlpha.900'
+                        }}
+                      >
+                        <FontAwesomeIcon icon='times' />
+                      </Button>
+                    </motion.div>
+                  </Flex>
+                )}
+              </Box>
+            </Flex>
+          </MotionLi>
+        </>
       ))}
     </MotionUl>
   )

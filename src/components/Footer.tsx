@@ -10,7 +10,7 @@ export function Footer() {
       width='100%'
       padding='1.7rem 0rem 0.8rem 0rem'
 
-      background='gray.500'
+      background='gray.700'
       color='whiteAlpha.900'
     >
       <Text as='span'>
