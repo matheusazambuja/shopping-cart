@@ -41,16 +41,6 @@ export function ProductList({ productsStock }: ProductListProps) {
 
   const toast = useToast()
 
-  const variantsMotionUl = {
-    hidden: { },
-    show: {
-      transition: {
-        delayChildren: 0.2,
-        staggerChildren: 0.2
-      }
-    }
-  }
-
   const variantsMotionLi = {
     hidden: { opacity: 0, scale: 0 },
     show: { opacity: 1, scale: 1 }
@@ -70,9 +60,9 @@ export function ProductList({ productsStock }: ProductListProps) {
       padding='0 1rem' width='100%'
 
       background={colorModeObject.backgroundHome} color='whiteAlpha.800'
-      variants={variantsMotionUl} initial='hidden' animate='show'
+      initial='hidden' animate='show'
     >
-      {productsStock.map((product, indexProduct) => (
+      {productsStock.map((product) => (
         <>
           <MotionLi key={product.id} data-key={product.id}
 
@@ -92,7 +82,7 @@ export function ProductList({ productsStock }: ProductListProps) {
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ delay: indexProduct * 0.2 }}
+              transition={{ delay: 0.2 }}
             >
               <Box as='div'
                 onClick={(event) => {
@@ -131,7 +121,7 @@ export function ProductList({ productsStock }: ProductListProps) {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
+                  transition={{ ease: 'easeOut', delay: 0.2 }}
                 >
                   <Text as='span' noOfLines={2} onClick={(event) => {
                     handleProductSelected(Number(event.currentTarget.parentElement.parentElement.parentElement.getAttribute('data-key')))
@@ -160,7 +150,7 @@ export function ProductList({ productsStock }: ProductListProps) {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ ease: 'easeOut', delay: indexProduct * 0.2 }}
+                    transition={{ ease: 'easeOut', delay: 0.2 }}
                   >
                     {formatPrice(product.price)}
                   </motion.div>

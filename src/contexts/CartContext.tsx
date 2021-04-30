@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import { ProductInCart } from '../types'
 import { products } from '../../db.json'
 import { toast } from "react-toastify";
+import Cookies from 'js-cookie';
 
 export interface UpdateProductQuantity {
   productId: number;
@@ -31,12 +32,10 @@ export function CartProvider({
   const [cart, setCart] = useState<ProductInCart[]>([])
 
   useEffect(() => {
-    const storagedCart = localStorage.getItem('@ShoppingCart:cart')
+    const cookiesCart = Cookies.getJSON('ShoppingCart:cart')
 
-    if (storagedCart) {
-      const storagedCartFormatted = JSON.parse(storagedCart)
-
-      setCart(storagedCartFormatted)
+    if (cookiesCart) {
+      setCart(cookiesCart)
     }
 
   }, [])
@@ -51,7 +50,7 @@ export function CartProvider({
         const cartUpdated = [ ...cart, { ...productStockSelected, quantity: 1, inCart: true } ]
 
         setCart(cartUpdated)
-        localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
+        Cookies.set('ShoppingCart:cart', JSON.stringify(cartUpdated));
       } else {
 
         const cartUpdated = cart.map((product) => {
@@ -64,7 +63,7 @@ export function CartProvider({
         })
 
         setCart(cartUpdated)
-        localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
+        Cookies.set('ShoppingCart:cart', JSON.stringify(cartUpdated));
       }
     }
     catch {
@@ -84,7 +83,7 @@ export function CartProvider({
       const cartUpdated = cart.filter((product) => product.id !== productId)
 
       setCart(cartUpdated)
-      localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
+      Cookies.set('ShoppingCart:cart', JSON.stringify(cartUpdated));
     }
     catch {
       toast.error('Erro na remoção do produto')
@@ -118,7 +117,7 @@ export function CartProvider({
       })
 
       setCart(cartUpdated)
-      localStorage.setItem('@ShoppingCart:cart', JSON.stringify(cartUpdated))
+      Cookies.set('ShoppingCart:cart', JSON.stringify(cartUpdated));
     }
     catch {
       toast.error('Erro na alteração de quantidade do produto')
